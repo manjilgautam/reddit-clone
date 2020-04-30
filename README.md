@@ -1,6 +1,6 @@
 ### Reddit-clone
 
-###Task list
+### Task list
 
 - [x] Generate a Vue App
    + Removed un-necessary components 
