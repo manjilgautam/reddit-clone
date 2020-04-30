@@ -13,6 +13,7 @@
       </b-field>
        <button class="button is-success">Add Post</button>
       </form>
+      <pre>{{posts}}</pre>
     </section>
 </template>
 
@@ -30,6 +31,16 @@ export default {
   mounted() {
     // this.init(); // call it from mapActions
     this.initSubreddit(this.$route.params.name);
+  },
+  watch: {
+    '$route.params.name': function () {
+      this.initSubreddit(this.$route.params.name);
+    },
+    subreddit() {
+      if (this.subreddit.id) {
+        this.initPosts(this.subreddit.id);
+      }
+    },
   },
   computed: {
     ...mapState('subreddit', ['posts']),
