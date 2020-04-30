@@ -7,8 +7,8 @@
 - [x] Create a Firebase Project
 - [x] Store the user info in Db and Set-up the Authentication
 - [x] Helping documents while adding Firebase Auth:
-    + ![](https://firebase.google.com/docs/auth/web/google-signin) ![]
-    + ![]!(https://firebase.google.com/docs/auth/web/manage-users)![]
+    + (https://firebase.google.com/docs/auth/web/google-signin)
+    + (https://firebase.google.com/docs/auth/web/manage-users)
        - Save user on Login in the Db
        - [x] Update Rules in the Firebase console as 
             ```javascript
