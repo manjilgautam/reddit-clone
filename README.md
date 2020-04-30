@@ -29,10 +29,19 @@
   -javascript
   -pixel
   -funny 
-- [ ] Added Vuexfire https://github.com/posva/vuexfire/tree/firestore
+- [x] Added Vuexfire https://github.com/posva/vuexfire/tree/firestore
      * [x] Added subreddits.js( store dir) file where connection to Firestore is made. 
      * [x] Added subreddits.vue for views and set-up the routing 
      * [x] Added subreddit.vue for individual post and set-up routing 
+     * [x] Shows single sub-reddit
+- [x] Added form for the Sub-reddits
+- [x] Setup the sub-reddit db. 
+    - Store the sub-reddit form's data in the Fire-store under Posts :elephant: table :fire:
+    - Added rules in the Firebase console 
+    ```javascript
+       match /posts/{post_id} {
+       allow write: if request.auth.uid == request.resource.data.user_id;
+    ```   
   * [ ] GFM task list 3-3
 - [ ] GFM task list 4
   - [ ] GFM task list 4-2
