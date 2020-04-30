@@ -1,7 +1,5 @@
 /*  eslint no-shadow: ["error", { "allow": ["state"] }] */
 import firebase from '@/firebase';
-import db from '@/db';
-
 
 const state = { // State for the Vuex: User which will have it's own field
   user: {},
@@ -10,25 +8,24 @@ const state = { // State for the Vuex: User which will have it's own field
 
 const mutations = {
   setUser(state, user) {
-    console.log(user);
-    state.user = user;
-    state.isLoggedIn = true;
+    if (user) {
+      state.user = user;
+      state.isLoggedIn = true;
+    } else {
+      state.user = {};
+      state.isLoggedIn = false;
+    }
   },
 };
 
 const actions = {
 
-  async login({ commit }) {
+  async login() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    const { user } = await firebase.auth().signInWithPopup(provider);
-    const setUser = {
-      id: user.uid,
-      name: user.displayName,
-      image: user.photoURL,
-      created_at: firebase.firestore.FieldValue.serverTimestamp(),
-    };
-    db.collection('users').doc(setUser.id).set(setUser);
-    commit('setUser', setUser);
+    await firebase.auth().signInWithPopup(provider);
+  },
+  async logout() {
+    await firebase.auth().signOut();
   },
 };
 
