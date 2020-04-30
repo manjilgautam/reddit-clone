@@ -42,6 +42,7 @@
        match /posts/{post_id} {
        allow write: if request.auth.uid == request.resource.data.user_id;
     ```   
+- [x] Display sub-reddit under specific subs
   * [ ] GFM task list 3-3
 - [ ] GFM task list 4
   - [ ] GFM task list 4-2
