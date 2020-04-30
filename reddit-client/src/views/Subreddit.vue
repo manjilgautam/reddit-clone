@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>{{ $subreddit.name }}</h1>
+    <h1>{{ subreddit.name }}</h1>
     <form @submit.prevent="onCreatePost(post)">
       <b-field label="Title">
         <b-input v-model="post.title" required></b-input>
