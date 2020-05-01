@@ -15,14 +15,12 @@ const state = {
 
 const actions = {
   async createPost({ getters }, post) {
-    console.log('The current ußser is: ', firebase.auth().currentUser);
     const result = posts.doc();
     post.id = result.id; // eslint-disable-line 
     post.subreddit_id = getters.subreddit.id; // eslint-disable-line 
     post.user_id = firebase.auth().currentUser.uid; // eslint-disable-line 
     post.created_at = firebase.firestore.FieldValue.serverTimestamp(); // eslint-disable-line 
     post.updated_at = firebase.firestore.FieldValue.serverTimestamp(); // eslint-disable-line 
-    console.log('This is the post: ', post);
     await posts.doc(post.id).set(post); // eslint-disable-line
   },
   initSubreddit: firestoreAction(({ bindFirestoreRef }, name) => {
