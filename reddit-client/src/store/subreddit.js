@@ -23,8 +23,10 @@ const actions = {
     post.updated_at = firebase.firestore.FieldValue.serverTimestamp(); // eslint-disable-line 
     await posts.doc(post.id).set(post); // eslint-disable-line
   },
-  initSubreddit: firestoreAction(({ bindFirestoreRef }, name) => {
-    bindFirestoreRef('subreddits', db.collection('subreddits').where('name', '==', name)); // This will bind the subreddits state with the firebase
+  initSubreddit: firestoreAction(({ bindFirestoreRef }, name) => { // returns the
+    // sub-reddit that matches with the name sent in param
+    bindFirestoreRef('subreddits', db.collection('subreddits').where('name', '==', name)); // This will bind
+    // the subreddits state with the firebase
   }),
   initPosts: firestoreAction(({ bindFirestoreRef }, subreddit_id) => { // eslint-disable-line 
     bindFirestoreRef('posts', posts.where('subreddit_id', '==', subreddit_id)); // eslint-disable-line 
@@ -32,7 +34,8 @@ const actions = {
 };
 
 const getters = {
-  subreddit: (state) => (state.subreddits[0] ? state.subreddits[0] : {}),
+  subreddit: (state) => (state.subreddits[0] ? state.subreddits[0] : {}), // Returns a
+  // first sub-reddits
 };
 
 export default {

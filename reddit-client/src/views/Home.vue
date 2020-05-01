@@ -1,15 +1,5 @@
 <template>
   <div class="home">
-    <button class="button is-success" @click="login()">Login with Google.</button>
-
+    <router-link class="button is-primary" :to="{name: 'subreddits'}">View Subreddits</router-link>
   </div>
 </template>
-
-<script>
-import { mapActions } from 'vuex'; // Vuex allows you to pull the action defined in store
-
-export default {
-  name: 'Home',
-  methods: mapActions('auth', ['login']), //  Please look into the login action defined in Store/auth file
-};
-</script>

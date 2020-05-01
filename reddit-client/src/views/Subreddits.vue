@@ -15,7 +15,8 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   mounted() {
-    this.init(); // call it from mapActions
+    this.init(); // call it from mapActions.
+    // This loads all the sub-reddits. Calls the init method in store/subreddits
   },
   computed: mapState('subreddits', ['subreddits']),
   methods: mapActions('subreddits', ['init']),

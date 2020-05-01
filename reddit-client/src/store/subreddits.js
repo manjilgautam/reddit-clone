@@ -10,7 +10,9 @@ const state = {
 const actions = {
 
   init: firestoreAction(({ bindFirestoreRef }) => {
-    bindFirestoreRef('subreddits', db.collection('subreddits')); // This will bind the subreddits state with the firebase
+    bindFirestoreRef('subreddits', db.collection('subreddits')); // This will bind the subreddits
+    // state with the firebase. Any time new-sbureddits is added,
+    // instantly pops in the subreddits array
   }),
 };
 

@@ -13,7 +13,7 @@
       </b-field>
       <button class="button is-success">Add Post</button>
     </form>
-    <div class="posts columns">
+    <div class="posts columns is-multiline">
       <div class="card column is-4" v-for="post in posts" :key="post.id">
         <div class="card-image" v-if="isImage(post.URL)">
           <figure class="image">
@@ -29,7 +29,9 @@
             </div>
             <div class="media-content">
               <p class="title is-4" v-if="!post.URL">{{ post.title }}</p>
-              <p class="title is-4" v-if="post.URL"><a :href="post.URL" target="_blank">{{ post.title }}</a></p>
+              <p class="title is-4" v-if="post.URL">
+                <a :href="post.URL" target="_blank">{{ post.title }}</a>
+              </p>
               <p class="subtitle is-6" v-if="post.URL"><a></a>@johnsmith</p>
             </div>
           </div>
@@ -46,46 +48,52 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   data: () => ({
     showForm: true,
     post: {
-      title: "",
-      description: "",
-      URL: ""
-    }
+      title: '',
+      description: '',
+      URL: '',
+    },
   }),
   mounted() {
     // this.init(); // call it from mapActions
     this.initSubreddit(this.$route.params.name);
   },
   watch: {
-    "$route.params.name": function() {
+    '$route.params.name': function () {
       this.initSubreddit(this.$route.params.name);
     },
     subreddit() {
       if (this.subreddit.id) {
         this.initPosts(this.subreddit.id);
       }
-    }
+    },
   },
   computed: {
-    ...mapState("subreddit", ["posts"]),
-    ...mapGetters("subreddit", ["subreddit"])
+    ...mapState('subreddit', ['posts']),
+    ...mapGetters('subreddit', ['subreddit']),
   },
   methods: {
     isImage(url) {
-      return url.match(/(png|jpg|jpeg|gif)$/)
+      return url.match(/(png|jpg|jpeg|gif)$/);
     },
-    ...mapActions("subreddit", ["createPost", "initSubreddit", "initPosts"]),
-    async onCreatePost() {
+    ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts']),
+    onCreatePost() {
       if (this.post.title && (this.post.description || this.post.URL)) {
-        await this.createPost(this.post);
+        this.createPost(this.post);
+        this.post = {
+          title: '',
+          description: '',
+          URL: '',
+        };
+        this.showForm = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
