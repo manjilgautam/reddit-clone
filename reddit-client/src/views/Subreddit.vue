@@ -1,7 +1,8 @@
 <template>
   <section>
-    <button @click="showForm = !showForm" class="button is-primary">Toggle Form:</button>
-    <form v-if="showForm" @submit.prevent="onCreatePost()">
+    <button v-if="isLoggedIn" @click="showForm = !showForm"
+    class="button is-primary">Toggle Form:</button>
+    <form v-if="showForm && isLoggedIn" @submit.prevent="onCreatePost()">
       <b-field label="Title">
         <b-input v-model="post.title" required></b-input>
       </b-field>
@@ -61,6 +62,7 @@ export default {
   }),
   mounted() {
     // this.init(); // call it from mapActions
+    this.initUsers();
     this.initSubreddit(this.$route.params.name);
   },
   watch: {
@@ -75,6 +77,7 @@ export default {
   },
   computed: {
     ...mapState('subreddit', ['posts']),
+    ...mapState('auth', ['isLoggedIn']),
     ...mapGetters('subreddit', ['subreddit']),
   },
   methods: {
@@ -82,6 +85,7 @@ export default {
       return url.match(/(png|jpg|jpeg|gif)$/);
     },
     ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts']),
+    ...mapActions('users', { initUsers: 'init' }),
     onCreatePost() {
       if (this.post.title && (this.post.description || this.post.URL)) {
         this.createPost(this.post);
