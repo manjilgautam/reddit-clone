@@ -25,7 +25,7 @@
           <div class="media">
             <div class="media-left">
               <figure class="image is-48x48">
-                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
+                <img :src="usersById[post.user_id].image" alt="Placeholder image" />
               </figure>
             </div>
             <div class="media-content">
@@ -33,7 +33,7 @@
               <p class="title is-4" v-if="post.URL">
                 <a :href="post.URL" target="_blank">{{ post.title }}</a>
               </p>
-              <p class="subtitle is-6"> {{ usersById[post.user_id].name }} </p>
+              <p class="subtitle is-6"> {{ usersById[post.user_id].name}} </p>
             </div>
           </div>
 
