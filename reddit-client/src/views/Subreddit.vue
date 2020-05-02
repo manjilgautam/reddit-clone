@@ -1,7 +1,8 @@
 <template>
   <section>
-    <button v-if="isLoggedIn" @click="showForm = !showForm"
-    class="button is-primary">Toggle Form:</button>
+    <button v-if="isLoggedIn" @click="showForm = !showForm" class="button is-primary">
+      Toggle Form:
+    </button>
     <form v-if="showForm && isLoggedIn" @submit.prevent="onCreatePost()">
       <b-field label="Title">
         <b-input v-model="post.title" required></b-input>
@@ -14,33 +15,34 @@
       </b-field>
       <button class="button is-success">Add Post</button>
     </form>
-    <div class="posts columns is-multiline">
-      <div class="card column is-4" v-for="post in posts" :key="post.id">
-        <div class="card-image" v-if="isImage(post.URL)">
-          <figure class="image">
-            <img :src="post.URL" alt="Placeholder image" />
-          </figure>
-        </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img :src="usersById[post.user_id].image" alt="Placeholder image" />
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4" v-if="!post.URL">{{ post.title }}</p>
-              <p class="title is-4" v-if="post.URL">
-                <a :href="post.URL" target="_blank">{{ post.title }}</a>
-              </p>
-              <p class="subtitle is-6"> {{ usersById[post.user_id].name}} </p>
-            </div>
+    <div class="posts columns is-multiline is-4">
+      <div class="column is-4" v-for="(post, index) in posts" :key="post.id">
+        <div class="card">
+          <div class="card-image" v-if="isImage(post.URL)">
+            <figure class="image">
+              <img :src="post.URL" alt="Placeholder image" />
+            </figure>
           </div>
-
-          <div class="content">
-            {{ post.description }}
-            <br />
-            <time datetime="2016-1-1">{{ post.created_at }}</time>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img :src="loadedUsersById[post.user_id].image" alt="Placeholder image" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4" v-if="!post.URL">{{ post.title }}</p>
+                <p class="title is-4" v-if="post.URL">
+                  <a :href="post.URL" target="_blank">{{ post.title }}</a>
+                </p>
+                <p class="subtitle is-6">{{ loadedUsersById[post.user_id].name }}</p>
+              </div>
+            </div>
+            <div class="content">
+              {{ post.description }}
+              <br />
+              <time datetime="2016-1-1">{{ getCreated(index) }}</time>
+            </div>
           </div>
         </div>
       </div>
@@ -82,6 +84,16 @@ export default {
       subreddit: 'subreddit/subreddit',
       usersById: 'users/usersById',
     }),
+    loadedUsersById() {
+      return this.posts.reduce((byId, post) => {
+        byId[post.user_id] = this.usersById[post.user_id] || { // eslint-disable-line
+          name: 'Loading...',
+          image:
+            'https://i.pinimg.com/236x/04/c7/8a/04c78a3bec46babab4a23e3e13091552--cover-picture-facebook-profile.jpg',
+        };
+        return byId; // eslint-disable-line
+      }, {});
+    },
   },
   methods: {
     isImage(url) {
@@ -100,6 +112,35 @@ export default {
         this.showForm = false;
       }
     },
+    getCreated(index) {
+      function timeSince(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        let interval = Math.floor(seconds / 31536000);
+        if (interval > 1) {
+          return `${interval} years`;
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) {
+          return `${interval} months`;
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval > 1) {
+          return `${interval} days`;
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) {
+          return `${interval} hours`;
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) {
+          return `${interval} minutes`;
+        }
+        return `${Math.floor(seconds)} seconds`;
+      }
+      return timeSince(this.posts[index].created_at.seconds * 1000) < 0
+        ? '0 seconds ago'
+        : `${timeSince(this.posts[index].created_at.seconds * 1000)} ago`;
+    },
   },
 };
 </script>
@@ -107,5 +148,15 @@ export default {
 <style>
 .posts {
   margin-top: 2em;
+}
+
+.card {
+  height: 100%;
+  margin: 1%;
+  border-radius: 5px;
+}
+
+.card img {
+  border-radius: 5px;
 }
 </style>
