@@ -1,3 +1,4 @@
+/*  eslint no-shadow: ["error", { "allow": ["state"] }] */
 import { firestoreAction } from 'vuexfire';
 import db from '@/db';
 
@@ -17,11 +18,17 @@ const actions = {
 };
 
 const getters = {
-  usersBy
-}
+  usersById(state) {
+    return state.users.reduce((byId, user) => {
+      byId[user.id] = user; // eslint-disable-line 
+      return byId;
+    }, {});
+  },
+};
 
 export default {
   namespaced: true,
   state,
   actions,
+  getters,
 };

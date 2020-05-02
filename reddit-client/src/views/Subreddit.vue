@@ -33,7 +33,7 @@
               <p class="title is-4" v-if="post.URL">
                 <a :href="post.URL" target="_blank">{{ post.title }}</a>
               </p>
-              <p class="subtitle is-6" v-if="post.URL"><a></a>@johnsmith</p>
+              <p class="subtitle is-6"> {{ usersById[post.user_id].name }} </p>
             </div>
           </div>
 
@@ -78,7 +78,10 @@ export default {
   computed: {
     ...mapState('subreddit', ['posts']),
     ...mapState('auth', ['isLoggedIn']),
-    ...mapGetters('subreddit', ['subreddit']),
+    ...mapGetters({
+      subreddit: 'subreddit/subreddit',
+      usersById: 'users/usersById',
+    }),
   },
   methods: {
     isImage(url) {
