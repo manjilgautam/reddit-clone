@@ -1,62 +1,82 @@
 <template>
-  <section>
-    <button v-if="isLoggedIn" @click="showForm = !showForm" class="button is-primary">
-      Toggle Form:
-    </button>
-    <form v-if="showForm && isLoggedIn" @submit.prevent="onCreatePost()">
-      <b-field label="Title">
-        <b-input v-model="post.title" required></b-input>
-      </b-field>
-      <b-field label="description">
-        <b-input type="textarea" v-model="post.description"></b-input>
-      </b-field>
-      <b-field label="URL">
-        <b-input v-model="post.URL" type="url"></b-input>
-      </b-field>
-      <button class="button is-success">Add Post</button>
-    </form>
-    <form class="search-form">
-      <b-field label="Search">
-        <b-input v-model="searchTerm" type="text"></b-input>
-      </b-field>
-    </form>
-    <div class="posts columns is-multiline is-4">
-      <div class="column is-4" v-for="(post, index) in filteredPosts" :key="post.id">
-        <div class="card">
-          <div class="card-image" v-if="isImage(post.URL)">
-            <figure class="image">
-              <img :src="post.URL" alt="Placeholder image" />
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img :src="loadedUsersById[post.user_id].image" alt="Placeholder image" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4" v-if="!post.URL">{{ post.title }}</p>
-                <p class="title is-4" v-if="post.URL">
-                  <a :href="post.URL" target="_blank">{{ post.title }}</a>
-                </p>
-                <p class="subtitle is-6">{{ loadedUsersById[post.user_id].name }}</p>
-              </div>
+    <section>
+        <button v-if="isLoggedIn"
+            @click="showForm = !showForm"
+            class="button is-primary">
+            Toggle Form:
+        </button>
+        <form v-if="showForm && isLoggedIn"
+            @submit.prevent="onCreatePost()">
+            <b-field label="Title">
+                <b-input v-model="post.title"
+                    required></b-input>
+            </b-field>
+            <b-field label="description">
+                <b-input type="textarea"
+                    v-model="post.description"></b-input>
+            </b-field>
+            <b-field label="URL">
+                <b-input v-model="post.URL"
+                    type="url"></b-input>
+            </b-field>
+            <button class="button is-success">Add Post</button>
+        </form>
+        <form class="search-form">
+            <b-field label="Search">
+                <b-input v-model="searchTerm"
+                    type="text"></b-input>
+            </b-field>
+        </form>
+        <div class="posts columns is-multiline is-4">
+            <div class="column is-4"
+                v-for="(post, index) in filteredPosts"
+                :key="post.id">
+                <div class="card">
+                    <div class="card-image"
+                        v-if="isImage(post.URL)">
+                        <figure class="image">
+                            <img :src="post.URL"
+                                alt="Placeholder image" />
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img :src="loadedUsersById[post.user_id].image"
+                                        alt="Placeholder image" />
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4"
+                                    v-if="!post.URL">{{ post.title }}</p>
+                                <p class="title is-4"
+                                    v-if="post.URL">
+                                    <a :href="post.URL"
+                                        target="_blank">{{ post.title }}</a>
+                                </p>
+                                <p class="subtitle is-6">
+                                  {{ loadedUsersById[post.user_id].name }}</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            {{ post.description }}
+                            <br />
+                            <time datetime="2016-1-1">{{ getCreated(index) }}</time>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="content">
-              {{ post.description }}
-              <br />
-              <time datetime="2016-1-1">{{ getCreated(index) }}</time>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapActions,
+} from 'vuex';
 
 export default {
   data: () => ({
@@ -92,19 +112,17 @@ export default {
     }),
     loadedUsersById() {
       return this.posts.reduce((byId, post) => {
-        byId[post.user_id] = this.usersById[post.user_id] || { // eslint-disable-line
+                    byId[post.user_id] = this.usersById[post.user_id] || { // eslint-disable-line
           name: 'Loading...',
-          image:
-            'https://i.pinimg.com/236x/04/c7/8a/04c78a3bec46babab4a23e3e13091552--cover-picture-facebook-profile.jpg',
+          image: 'https://i.pinimg.com/236x/04/c7/8a/04c78a3bec46babab4a23e3e13091552--cover-picture-facebook-profile.jpg',
         };
-        return byId; // eslint-disable-line
+                    return byId; // eslint-disable-line
       }, {});
     },
-    filteredPosts() { // eslint-disable-line
+    filteredPosts() {
       if (this.searchTerm) {
         const regexp = new RegExp(this.searchTerm, 'gi');
-        return this.posts.filter((post) => { return post.title.match(regexp); // eslint-disable-line
-        });
+        return this.posts.filter((post) => (post.description + post.title).match(regexp));
       }
       return this.posts;
     },
@@ -114,7 +132,9 @@ export default {
       return url.match(/(png|jpg|jpeg|gif)$/);
     },
     ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts']),
-    ...mapActions('users', { initUsers: 'init' }),
+    ...mapActions('users', {
+      initUsers: 'init',
+    }),
     onCreatePost() {
       if (this.post.title && (this.post.description || this.post.URL)) {
         this.createPost(this.post);
@@ -160,20 +180,21 @@ export default {
 </script>
 
 <style>
-.posts {
-  margin-top: 2em;
-}
+    .posts {
+        margin-top: 2em;
+    }
 
-.card {
-  height: 100%;
-  margin: 1%;
-  border-radius: 5px;
-}
+    .card {
+        height: 100%;
+        margin: 1%;
+        border-radius: 5px;
+    }
 
-.card img {
-  border-radius: 5px;
-}
-.search-form {
-  margin-top: 2em;
-}
+    .card img {
+        border-radius: 5px;
+    }
+
+    .search-form {
+        margin-top: 2em;
+    }
 </style>
