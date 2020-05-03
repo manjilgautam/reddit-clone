@@ -15,8 +15,13 @@
       </b-field>
       <button class="button is-success">Add Post</button>
     </form>
+    <form class="search-form">
+      <b-field label="Search">
+        <b-input v-model="searchTerm" type="text"></b-input>
+      </b-field>
+    </form>
     <div class="posts columns is-multiline is-4">
-      <div class="column is-4" v-for="(post, index) in posts" :key="post.id">
+      <div class="column is-4" v-for="(post, index) in filteredPosts" :key="post.id">
         <div class="card">
           <div class="card-image" v-if="isImage(post.URL)">
             <figure class="image">
@@ -56,6 +61,7 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
   data: () => ({
     showForm: true,
+    searchTerm: '',
     post: {
       title: '',
       description: '',
@@ -93,6 +99,14 @@ export default {
         };
         return byId; // eslint-disable-line
       }, {});
+    },
+    filteredPosts() { // eslint-disable-line
+      if (this.searchTerm) {
+        const regexp = new RegExp(this.searchTerm, 'gi');
+        return this.posts.filter((post) => { return post.title.match(regexp); // eslint-disable-line
+        });
+      }
+      return this.posts;
     },
   },
   methods: {
@@ -158,5 +172,8 @@ export default {
 
 .card img {
   border-radius: 5px;
+}
+.search-form {
+  margin-top: 2em;
 }
 </style>
