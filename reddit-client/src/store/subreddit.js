@@ -23,6 +23,9 @@ const actions = {
     post.updated_at = firebase.firestore.FieldValue.serverTimestamp(); // eslint-disable-line 
     await posts.doc(post.id).set(post); // eslint-disable-line
   },
+  async deletePost(_, post_id) { // eslint-disable-line 
+    await posts.doc(post_id).delete(); // eslint-disable-line 
+  },
   initSubreddit: firestoreAction(({ bindFirestoreRef }, name) => { // returns the
     // sub-reddit that matches with the name sent in param
     bindFirestoreRef('subreddits', db.collection('subreddits').where('name', '==', name)); // This will bind

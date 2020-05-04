@@ -64,7 +64,14 @@
                             <br />
                             <time datetime="2016-1-1">{{ getCreated(index) }}</time>
                             <br>
-                              <button class="button is-primary">Comment</button>
+                              <!-- <router-link :to="{ name: 'post',
+                              params: { name: $route.params.name, post_id: post.id } }"
+                              class="button is-primary">View Post</router-link> -->
+                              <br>
+                              <button @click="deletePost(post.id)" v-if="user
+                              && user.id == post.user_id"
+                              class="button is-danger">
+                                Delete Post</button>
                         </div>
                     </div>
                 </div>
@@ -107,7 +114,7 @@ export default {
   },
   computed: {
     ...mapState('subreddit', ['posts']),
-    ...mapState('auth', ['isLoggedIn']),
+    ...mapState('auth', ['isLoggedIn', 'user']),
     ...mapGetters({
       subreddit: 'subreddit/subreddit',
       usersById: 'users/usersById',
@@ -133,7 +140,7 @@ export default {
     isImage(url) {
       return url.match(/(png|jpg|jpeg|gif)$/);
     },
-    ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts']),
+    ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts', 'deletePost']),
     ...mapActions('users', {
       initUsers: 'init',
     }),

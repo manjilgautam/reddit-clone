@@ -49,7 +49,7 @@
  -[x] Show username 
  -[x] Formatted the date
  -[x]  Search/Filter Posts 
- -[] Figure out the formatting 
+ -[x] Delete a post
 
   * [ ] GFM task list 3-3
 - [ ] GFM task list 4
