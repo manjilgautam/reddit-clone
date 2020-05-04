@@ -63,6 +63,8 @@
                             {{ post.description }}
                             <br />
                             <time datetime="2016-1-1">{{ getCreated(index) }}</time>
+                            <br>
+                              <button class="button is-primary">Comment</button>
                         </div>
                     </div>
                 </div>

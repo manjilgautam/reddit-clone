@@ -48,7 +48,7 @@
 - [x] Hide form if it's not logged in 
  -[x] Show username 
  -[x] Formatted the date
- -[]  Search/Filter Posts 
+ -[x]  Search/Filter Posts 
  -[] Figure out the formatting 
 
   * [ ] GFM task list 3-3
